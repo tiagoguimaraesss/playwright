@@ -1,11 +1,16 @@
 # 🎭 Playwright E2E Tests
 
+![Playwright E2E Tests](https://github.com/tiagoguimaraesss/playwright/actions/workflows/ci.yml/badge.svg)
+
 Projeto de testes end-to-end (E2E) utilizando o framework [Playwright](https://playwright.dev/) com TypeScript, seguindo as melhores práticas recomendadas pela Microsoft.
 
 ## 📁 Estrutura do Projeto
 
 ```
 playwright/
+├── .github/
+│   └── workflows/
+│       └── ci.yml                # Pipeline CI/CD (GitHub Actions)
 ├── .mcp.json                     # Configuração do Playwright MCP Server
 ├── playwright.config.ts          # Configuração principal do Playwright
 ├── package.json                  # Dependências e scripts do projeto
@@ -99,7 +104,40 @@ Após a execução dos testes, o relatório HTML é gerado em `playwright-report
 npm run test:report
 ```
 
-## 📚 Referências
+## � CI/CD Pipeline (GitHub Actions)
+
+O projeto possui uma pipeline automatizada que roda a cada push ou pull request na branch `main`.
+
+### Etapas da Pipeline
+
+```
+┌─────────────┐     ┌─────────────────────┐     ┌──────────────────────┐
+│  🏗️ Build   │────▶│    🧪 Test (shards)  │────▶│  📊 Report & Deploy  │
+│             │     │  ┌───────────────┐   │     │                      │
+│ • Checkout  │     │  │ Shard 1/3     │   │     │ • Merge blob reports │
+│ • Node.js   │     │  │ Shard 2/3     │   │     │ • Gerar HTML report  │
+│ • npm ci    │     │  │ Shard 3/3     │   │     │ • Deploy Pages       │
+│ • Browsers  │     │  └───────────────┘   │     │                      │
+└─────────────┘     └─────────────────────┘     └──────────────────────┘
+```
+
+| Etapa | Descrição |
+|-------|-----------|
+| **🏗️ Build** | Instala dependências do Node.js e os navegadores do Playwright com cache |
+| **🧪 Test** | Executa os testes em paralelo usando 3 shards para performance |
+| **📊 Report** | Faz merge dos relatórios e publica no GitHub Pages |
+
+### Relatório Online
+
+Após cada execução da pipeline, o relatório HTML do Playwright é publicado automaticamente no **GitHub Pages**:
+
+🔗 **[Ver Relatório](https://tiagoguimaraesss.github.io/playwright/)**
+
+### Executar Pipeline Manualmente
+
+A pipeline também pode ser disparada manualmente pela aba **Actions** do repositório (`workflow_dispatch`).
+
+## �📚 Referências
 
 - [Documentação do Playwright](https://playwright.dev/docs/intro)
 - [Playwright MCP](https://github.com/microsoft/playwright-mcp)
