@@ -41,10 +41,10 @@ Este plano de testes cobre a página principal de documentação do Playwright (
 **File:** `tests/navegacao-principal/funcionalidade-busca.spec.ts`
 
 **Steps:**
-  1. Clicar no botão de busca (Command+K)
+  1. Clicar no botão de busca
     - expect: Deve abrir o modal ou interface de busca
-  2. Pressionar Ctrl+K (ou Cmd+K no Mac)
-    - expect: Deve abrir a interface de busca via teclado
+  2. Pressionar Ctrl+K (Linux/Windows) ou Cmd+K (Mac)
+    - expect: Deve abrir a interface de busca via teclado (atalho genérico para qualquer sistema operacional)
 
 ### 2. Sidebar e Navegação de Documentação
 

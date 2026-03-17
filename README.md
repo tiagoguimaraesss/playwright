@@ -9,22 +9,33 @@ Projeto de testes end-to-end (E2E) utilizando o framework [Playwright](https://p
 ```
 playwright/
 ├── .github/
+│   ├── agents/                           # Agentes GitHub Copilot
+│   │   ├── playwright-test-generator.agent.md
+│   │   ├── playwright-test-healer.agent.md
+│   │   └── playwright-test-planner.agent.md
 │   └── workflows/
-│       └── ci.yml                # Pipeline CI/CD (GitHub Actions)
-├── .mcp.json                     # Configuração do Playwright MCP Server
-├── playwright.config.ts          # Configuração principal do Playwright
-├── package.json                  # Dependências e scripts do projeto
+│       └── ci.yml                        # Pipeline CI/CD (GitHub Actions)
+├── .mcp.json                             # Configuração do Playwright MCP Server
+├── playwright.config.ts                  # Configuração principal do Playwright
+├── package.json                          # Dependências e scripts do projeto
+├── specs/                                # Planos de teste (documentação)
+│   └── playwright-docs-test-plan.md      # Plano de testes - playwright.dev/docs
 ├── tests/
-│   ├── fixtures/                 # Fixtures customizados (reutilização de objetos)
-│   │   ├── base.fixture.ts       # Fixture base com Page Objects
-│   │   └── index.ts              # Barrel export dos fixtures
-│   ├── pages/                    # Page Objects (POM)
-│   │   ├── home.page.ts          # Page Object - Página inicial
-│   │   ├── docs.page.ts          # Page Object - Documentação
-│   │   └── index.ts              # Barrel export dos Page Objects
+│   ├── fixtures/                         # Fixtures customizados (reutilização de objetos)
+│   │   ├── base.fixture.ts               # Fixture base com Page Objects
+│   │   └── index.ts                      # Barrel export dos fixtures
+│   ├── pages/                            # Page Objects (POM)
+│   │   ├── home.page.ts                  # Page Object - Página inicial
+│   │   ├── docs.page.ts                  # Page Object - Documentação
+│   │   └── index.ts                      # Barrel export dos Page Objects
 │   ├── docs/
-│   │   └── docs.spec.ts          # Testes da seção de documentação
-│   └── example.spec.ts           # Testes da página inicial
+│   │   └── docs.spec.ts                  # Testes da seção de documentação
+│   ├── navegacao-principal/              # Suíte 1 - Navegação Principal e Layout
+│   │   ├── renderizar-cabecalho.spec.ts  # 1.1 Renderização do cabeçalho
+│   │   ├── navegacao-secoes.spec.ts      # 1.2 Navegação entre seções
+│   │   └── funcionalidade-busca.spec.ts  # 1.3 Funcionalidade de busca
+│   ├── seed.spec.ts                      # Seed de navegação para os testes
+│   └── example.spec.ts                   # Testes da página inicial
 └── README.md
 ```
 
@@ -91,6 +102,28 @@ Utilizamos os [locators recomendados pelo Playwright](https://playwright.dev/doc
 
 ### Web-first Assertions
 Todas as asserções utilizam `expect()` com [auto-waiting](https://playwright.dev/docs/test-assertions), garantindo estabilidade nos testes.
+
+## 📋 Planos de Teste e Suítes
+
+Os planos de teste ficam em `specs/` e descrevem os cenários de cobertura em linguagem natural antes de serem automatizados. Cada plano é mapeado para uma pasta de testes correspondente em `tests/`.
+
+| Suíte | Diretório | Cenários |
+|-------|-----------|----------|
+| 1. Navegação Principal e Layout | `tests/navegacao-principal/` | Cabeçalho, navegação entre seções, busca |
+
+### Seed
+
+O arquivo `tests/seed.spec.ts` é o ponto de partida compartilhado pelos agentes de geração de testes. Ele serve como contexto de fixtures e rota base para geração automatizada de novos specs.
+
+## 🤖 Agentes GitHub Copilot
+
+Este projeto inclui agentes Copilot em `.github/agents/` para auxiliar na criação, manutenção e planejamento de testes:
+
+| Agente | Descrição |
+|--------|-----------|
+| `playwright-test-planner` | Cria planos de teste abrangentes para uma aplicação web |
+| `playwright-test-generator` | Gera specs Playwright automatizados a partir de um plano de testes |
+| `playwright-test-healer` | Depura e corrige testes Playwright com falha |
 
 ## 🤖 Playwright MCP
 
