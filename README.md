@@ -103,6 +103,11 @@ Utilizamos os [locators recomendados pelo Playwright](https://playwright.dev/doc
 ### Web-first Assertions
 Todas as asserções utilizam `expect()` com [auto-waiting](https://playwright.dev/docs/test-assertions), garantindo estabilidade nos testes.
 
+### Deduplicação de Testes
+Testes que cobrem o mesmo elemento com a mesma asserção são considerados duplicatas e devem ser removidos. A regra geral é:
+- Testes de **visibilidade de elemento** que já estão cobertos em specs de suíte dedicados (ex.: `navegacao-principal/`) não devem ser repetidos em specs legados (ex.: `docs/docs.spec.ts`).
+- Testes que validam **caminhos distintos** para o mesmo resultado final (ex.: acesso direto vs. fluxo via botão) são aceitos, desde que comentados para deixar clara a intenção de cada um.
+
 ## 📋 Planos de Teste e Suítes
 
 Os planos de teste ficam em `specs/` e descrevem os cenários de cobertura em linguagem natural antes de serem automatizados. Cada plano é mapeado para uma pasta de testes correspondente em `tests/`.

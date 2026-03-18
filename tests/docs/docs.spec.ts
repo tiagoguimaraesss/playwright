@@ -1,6 +1,8 @@
 import { test, expect } from '../fixtures';
 
 test.describe('Playwright.dev - Documentação', () => {
+  // Valida o carregamento direto da página de docs (acesso via URL).
+  // Diferente de example.spec.ts que testa o fluxo via botão "Get started".
   test('deve exibir a página de instalação corretamente', async ({ docsPage }) => {
     await docsPage.goto();
 
@@ -17,11 +19,5 @@ test.describe('Playwright.dev - Documentação', () => {
     await docsPage.goto();
 
     await expect(docsPage.tocLinks.first()).toBeVisible();
-  });
-
-  test('deve ter o botão de busca funcional', async ({ docsPage }) => {
-    await docsPage.goto();
-
-    await expect(docsPage.searchButton).toBeVisible();
   });
 });
