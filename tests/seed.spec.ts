@@ -1,9 +1,12 @@
 import { test, expect } from './fixtures';
 
-test.describe('Seed - Playwright.dev', () => {
-  test('seed', async ({ page, homePage }) => {
-    // Navega para a página inicial do Playwright.dev
+/**
+ * Smoke test — verifica que o site está acessível antes de qualquer suíte.
+ * Execute com: playwright test seed.spec.ts
+ */
+test.describe('Smoke - Playwright.dev', () => {
+  test('site deve estar acessível', async ({ homePage }) => {
     await homePage.goto();
-    await expect(page).toHaveURL(/playwright\.dev/);
+    await expect(homePage.page).toHaveURL(/playwright\.dev/);
   });
 });

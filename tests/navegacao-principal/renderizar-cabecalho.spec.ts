@@ -6,7 +6,8 @@ import { test, expect } from '../fixtures';
 test.describe('Navegação Principal e Layout', () => {
   test('Deve renderizar corretamente o cabeçalho principal', async ({ page }) => {
     // 1. Navegar para a página de documentação do Playwright
-    await page.goto('https://playwright.dev/docs/intro');
+    // Usar caminho relativo para respeitar a baseURL definida em playwright.config.ts.
+    await page.goto('/docs/intro');
     const mainNav = page.getByRole('navigation', { name: 'Main' });
 
     // O logo do Playwright deve estar visível

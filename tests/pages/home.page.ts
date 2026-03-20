@@ -15,8 +15,10 @@ export class HomePage {
   constructor(page: Page) {
     this.page = page;
     this.getStartedLink = page.getByRole('link', { name: 'Get started' });
-    this.heading = page.locator('.hero__title');
-    this.heroDescription = page.locator('.hero__subtitle');
+    // Locators de role/text são preferíveis a seletores de classe CSS.
+    // https://playwright.dev/docs/locators#locate-by-role
+    this.heading = page.getByRole('heading', { level: 1 });
+    this.heroDescription = page.getByText(/Any browser/i);
   }
 
   async goto() {

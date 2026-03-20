@@ -5,7 +5,8 @@ import { test, expect } from '../fixtures';
 
 test.describe('Navegação Principal e Layout', () => {
   test('Deve funcionar corretamente o botão de busca', async ({ page }) => {
-    await page.goto('https://playwright.dev/docs/intro');
+    // Usar caminho relativo para respeitar a baseURL definida em playwright.config.ts.
+    await page.goto('/docs/intro');
 
     // 1. Clicar no botão de busca
     await page.getByRole('button', { name: 'Search' }).click();
