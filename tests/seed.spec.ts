@@ -1,7 +1,7 @@
 import { test, expect } from './fixtures';
 
 /**
- * Smoke test — verifica que o site está acessível antes de qualquer suíte.
+ * Smoke test independente para validar disponibilidade do site.
  * Execute com: playwright test seed.spec.ts
  */
 test.describe('Smoke - Playwright.dev', () => {

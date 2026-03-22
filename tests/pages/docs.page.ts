@@ -9,14 +9,32 @@ import type { Page, Locator } from '@playwright/test';
 export class DocsPage {
   readonly page: Page;
   readonly installationHeading: Locator;
+  readonly mainNav: Locator;
+  readonly logoLink: Locator;
+  readonly docsLink: Locator;
+  readonly apiLink: Locator;
+  readonly communityLink: Locator;
+  readonly languageButton: Locator;
+  readonly themeToggleButton: Locator;
   readonly searchButton: Locator;
+  readonly searchBox: Locator;
   readonly sidebar: Locator;
   readonly tocLinks: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.installationHeading = page.getByRole('heading', { name: 'Installation' });
+    this.mainNav = page.getByRole('navigation', { name: 'Main' });
+    this.logoLink = this.mainNav.getByRole('link', { name: /Playwright/ }).first();
+    this.docsLink = this.mainNav.getByRole('link', { name: 'Docs', exact: true });
+    this.apiLink = this.mainNav.getByRole('link', { name: 'API', exact: true });
+    this.communityLink = this.mainNav.getByRole('link', { name: 'Community', exact: true });
+    this.languageButton = this.mainNav.getByRole('button', { name: 'Node.js', exact: true });
+    this.themeToggleButton = this.mainNav.getByRole('button', {
+      name: /Switch between dark and light mode/,
+    });
     this.searchButton = page.getByRole('button', { name: 'Search' });
+    this.searchBox = page.getByRole('searchbox', { name: 'Search' });
     this.sidebar = page.getByRole('navigation', { name: 'Docs sidebar' });
     // O sumário (TOC) do Docusaurus é renderizado como uma <ul> simples sem papel ARIA
     // ou nome acessível. A classe CSS .table-of-contents__link é o seletor mais
@@ -29,8 +47,36 @@ export class DocsPage {
     await this.page.goto('/docs/intro');
   }
 
-  async searchFor(query: string) {
+  async openSearch() {
     await this.searchButton.click();
-    await this.page.getByPlaceholder('Search docs').fill(query);
+  }
+
+  async openSearchWithShortcut() {
+    await this.page.keyboard.press('ControlOrMeta+k');
+  }
+
+  async closeSearchWithEscape() {
+    await this.page.keyboard.press('Escape');
+  }
+
+  async searchFor(query: string) {
+    await this.openSearch();
+    await this.searchBox.fill(query);
+  }
+
+  async clickDocsLink() {
+    await this.docsLink.click();
+  }
+
+  async clickApiLink() {
+    await this.apiLink.click();
+  }
+
+  async clickCommunityLink() {
+    await this.communityLink.click();
+  }
+
+  async clickLogoLink() {
+    await this.logoLink.click();
   }
 }

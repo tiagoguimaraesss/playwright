@@ -4,23 +4,30 @@
 import { test, expect } from '../fixtures';
 
 test.describe('Navegação Principal e Layout', () => {
-  test('Deve funcionar corretamente o botão de busca', async ({ page }) => {
-    // Usar caminho relativo para respeitar a baseURL definida em playwright.config.ts.
-    await page.goto('/docs/intro');
+  test('Deve funcionar corretamente o botão de busca', async ({ docsPage }) => {
+    await docsPage.goto();
 
     // 1. Clicar no botão de busca
-    await page.getByRole('button', { name: 'Search' }).click();
+    await docsPage.openSearch();
     
     // Deve abrir o modal ou interface de busca
-    await expect(page.getByRole('searchbox', { name: 'Search' })).toBeVisible();
+    await expect(docsPage.searchBox).toBeVisible();
     
     // Fechar modal de busca com Escape
-    await page.keyboard.press('Escape');
+    await docsPage.closeSearchWithEscape();
     
     // 2. Pressionar Ctrl+K (Linux/Windows) ou Cmd+K (Mac)
-    await page.keyboard.press('ControlOrMeta+k');
+    await docsPage.openSearchWithShortcut();
     
     // Deve abrir a interface de busca via teclado
-    await expect(page.getByRole('searchbox', { name: 'Search' })).toBeVisible();
+    await expect(docsPage.searchBox).toBeVisible();
+  });
+
+  test('Deve permitir pesquisar na documentação', async ({ docsPage }) => {
+    await docsPage.goto();
+
+    await docsPage.searchFor('fixtures');
+
+    await expect(docsPage.searchBox).toHaveValue('fixtures');
   });
 });

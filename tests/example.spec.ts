@@ -9,10 +9,10 @@ test.describe('Playwright.dev - Página Inicial', () => {
     await expect(homePage.page).toHaveTitle(/Playwright/);
   });
 
-  test('deve navegar para a documentação ao clicar em "Get started"', async ({ homePage }) => {
+  test('deve navegar para a documentação ao clicar em "Get started"', async ({ homePage, docsPage }) => {
     await homePage.clickGetStarted();
 
-    await expect(homePage.page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+    await expect(docsPage.installationHeading).toBeVisible();
   });
 
   test('deve exibir o link "Get started" visível', async ({ homePage }) => {
