@@ -14,8 +14,11 @@ playwright/
 │   │   ├── playwright-test-healer.agent.md
 │   │   └── playwright-test-planner.agent.md
 │   └── workflows/
-│       └── ci.yml                        # Pipeline CI/CD (GitHub Actions)
-├── .mcp.json                             # Configuração do Playwright MCP Server
+│       ├── ci.yml                        # Pipeline CI/CD (GitHub Actions)
+│       └── copilot-setup-steps.yml       # Setup de ambiente para Copilot Coding Agent
+├── .mcp.json                             # MCP Server - automação de browser por LLMs
+├── .vscode/
+│   └── mcp.json                          # MCP Server - execução de testes via Playwright
 ├── playwright.config.ts                  # Configuração principal do Playwright
 ├── package.json                          # Dependências e scripts do projeto
 ├── specs/                                # Planos de teste (documentação)
@@ -26,7 +29,7 @@ playwright/
 │   │   └── index.ts                      # Barrel export dos fixtures
 │   ├── pages/                            # Page Objects (POM)
 │   │   ├── home.page.ts                  # Page Object - Página inicial
-│   │   ├── docs.page.ts                  # Page Object - Documentação
+│   │   ├── docs.page.ts                  # Page Object - Documentação, navegação e busca
 │   │   └── index.ts                      # Barrel export dos Page Objects
 │   ├── docs/
 │   │   └── docs.spec.ts                  # Testes da seção de documentação
@@ -34,7 +37,7 @@ playwright/
 │   │   ├── renderizar-cabecalho.spec.ts  # 1.1 Renderização do cabeçalho
 │   │   ├── navegacao-secoes.spec.ts      # 1.2 Navegação entre seções
 │   │   └── funcionalidade-busca.spec.ts  # 1.3 Funcionalidade de busca
-│   ├── seed.spec.ts                      # Seed de navegação para os testes
+│   ├── seed.spec.ts                      # Smoke test independente de disponibilidade
 │   └── example.spec.ts                   # Testes da página inicial
 └── README.md
 ```
@@ -90,6 +93,11 @@ npm run test:codegen
 ### Page Object Model (POM)
 Os Page Objects estão em `tests/pages/` e encapsulam a interação com cada página, seguindo o [padrão recomendado pelo Playwright](https://playwright.dev/docs/pom).
 
+| Page Object | Responsabilidade |
+|-------------|------------------|
+| `HomePage` | Página inicial: heading, hero, link "Get started" |
+| `DocsPage` | Documentação, navegação principal (header, links Docs/API/Community, logo, idioma, tema), busca (botão, atalho, searchbox) e sidebar |
+
 ### Fixtures
 Fixtures customizados em `tests/fixtures/` permitem reutilizar Page Objects de forma isolada entre os testes, seguindo a [documentação oficial](https://playwright.dev/docs/test-fixtures).
 
@@ -116,9 +124,9 @@ Os planos de teste ficam em `specs/` e descrevem os cenários de cobertura em li
 |-------|-----------|----------|
 | 1. Navegação Principal e Layout | `tests/navegacao-principal/` | Cabeçalho, navegação entre seções, busca |
 
-### Seed
+### Seed / Smoke Test
 
-O arquivo `tests/seed.spec.ts` é o ponto de partida compartilhado pelos agentes de geração de testes. Ele serve como contexto de fixtures e rota base para geração automatizada de novos specs.
+O arquivo `tests/seed.spec.ts` é um smoke test **independente** que valida a disponibilidade do site antes de qualquer suíte. Ele não implica ordem de execução — cada spec deve ser autossuficiente. O seed também serve como referência de contexto para os agentes de geração de testes.
 
 ## 🤖 Agentes GitHub Copilot
 
@@ -132,7 +140,14 @@ Este projeto inclui agentes Copilot em `.github/agents/` para auxiliar na criaç
 
 ## 🤖 Playwright MCP
 
-Este projeto inclui o arquivo `.mcp.json` para integração com o [Playwright MCP Server](https://github.com/microsoft/playwright-mcp), que permite a automação de navegador por LLMs via Model Context Protocol.
+O projeto utiliza dois servidores MCP (Model Context Protocol) para integração com LLMs:
+
+| Arquivo | Servidor | Finalidade |
+|---------|----------|------------|
+| `.mcp.json` | `@playwright/mcp@latest` | Automação de browser por LLMs (navegação, screenshots, snapshots) |
+| `.vscode/mcp.json` | `playwright run-test-mcp-server` | Execução, debug e geração de testes via MCP dentro do VS Code |
+
+Os agentes Copilot também declaram o servidor `playwright-test` inline no frontmatter YAML de cada `.agent.md`.
 
 ## 📊 Relatórios
 
@@ -142,7 +157,7 @@ Após a execução dos testes, o relatório HTML é gerado em `playwright-report
 npm run test:report
 ```
 
-## � CI/CD Pipeline (GitHub Actions)
+## 🔄 CI/CD Pipeline (GitHub Actions)
 
 O projeto possui uma pipeline automatizada que roda a cada push ou pull request na branch `main`.
 
@@ -175,7 +190,11 @@ Após cada execução da pipeline, o relatório HTML do Playwright é publicado 
 
 A pipeline também pode ser disparada manualmente pela aba **Actions** do repositório (`workflow_dispatch`).
 
-## �📚 Referências
+### Copilot Coding Agent
+
+O workflow `copilot-setup-steps.yml` prepara o ambiente (Node.js, dependências, navegadores) para que o [Copilot Coding Agent](https://docs.github.com/en/copilot/using-github-copilot/using-copilot-coding-agent) possa operar diretamente no repositório via GitHub Actions.
+
+## 📚 Referências
 
 - [Documentação do Playwright](https://playwright.dev/docs/intro)
 - [Playwright MCP](https://github.com/microsoft/playwright-mcp)
