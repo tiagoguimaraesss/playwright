@@ -1,6 +1,6 @@
-# 🎭 Playwright E2E Tests
+# 🎭 Playwright AI Playground
 
-![Playwright E2E Tests](https://github.com/tiagoguimaraesss/playwright/actions/workflows/ci.yml/badge.svg)
+![Playwright AI Playground](https://github.com/tiagoguimaraesss/playwright-ai-playground/actions/workflows/ci.yml/badge.svg)
 
 Projeto de testes end-to-end (E2E) utilizando o framework [Playwright](https://playwright.dev/) com TypeScript, seguindo as melhores práticas recomendadas pela Microsoft.
 
@@ -184,7 +184,7 @@ O projeto possui uma pipeline automatizada que roda a cada push ou pull request 
 
 Após cada execução da pipeline, o relatório HTML do Playwright é publicado automaticamente no **GitHub Pages**:
 
-🔗 **[Ver Relatório](https://tiagoguimaraesss.github.io/playwright/)**
+🔗 **[Ver Relatório](https://tiagoguimaraesss.github.io/playwright-ai-playground/)**
 
 ### Executar Pipeline Manualmente
 

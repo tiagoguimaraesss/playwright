@@ -1,5 +1,5 @@
 {
-  "name": "playwright-e2e-tests",
+  "name": "playwright-ai-playground",
   "version": "1.0.0",
   "description": "Projeto de testes end-to-end com Playwright e TypeScript",
   "scripts": {
